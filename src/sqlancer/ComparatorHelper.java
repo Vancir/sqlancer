@@ -89,6 +89,9 @@ public final class ComparatorHelper {
             String secondQueryString = String.format(queryFormatString,
                     combinedString.stream().collect(Collectors.joining(";")), secondResultSet.size());
             state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
+
+            Main.nrUnmatchResultSets.addAndGet(1);
+
             String assertionMessage = String.format("the size of the result sets mismatch (%d and %d)!\n%s\n%s",
                     resultSet.size(), secondResultSet.size(), firstQueryString, secondQueryString);
             throw new AssertionError(assertionMessage);
@@ -108,6 +111,9 @@ public final class ComparatorHelper {
                     combinedString.stream().collect(Collectors.joining(";")), secondResultSetMisses);
             // update the SELECT queries to be logged at the bottom of the error log file
             state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
+
+            Main.nrUnmatchResultSets.addAndGet(1);
+
             String assertionMessage = String.format("the content of the result sets mismatch!\n%s\n%s",
                     firstQueryString, secondQueryString);
             throw new AssertionError(assertionMessage);

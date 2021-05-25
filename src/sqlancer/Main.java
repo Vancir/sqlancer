@@ -45,6 +45,8 @@ public final class Main {
     public static volatile AtomicLong nrDatabases = new AtomicLong();
     public static volatile AtomicLong nrSuccessfulActions = new AtomicLong();
     public static volatile AtomicLong nrUnsuccessfulActions = new AtomicLong();
+    public static volatile AtomicLong nrUnmatchResultSets = new AtomicLong();
+
     static int threadsShutdown;
     static boolean progressMonitorStarted;
 
@@ -593,14 +595,19 @@ public final class Main {
                 long currentNrDbs = nrDatabases.get();
                 long nrCurrentDbs = currentNrDbs - lastNrDbs;
                 double throughputDbs = nrCurrentDbs / (elapsedTimeMillis / 1000d);
-                long successfulStatementsRatio = (long) (100.0 * nrSuccessfulActions.get()
-                        / (nrSuccessfulActions.get() + nrUnsuccessfulActions.get()));
+
+                long successfulStatementsNum = nrSuccessfulActions.get();
+                long totalStatementsNum = nrSuccessfulActions.get() + nrUnsuccessfulActions.get();
+                long successfulStatementsRatio = (long) (100.0 * successfulStatementsNum / totalStatementsNum);
+
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                 Date date = new Date();
                 System.out.println(String.format(
-                        "[%s] Executed %d queries (%d queries/s; %.2f/s dbs, successful statements: %2d%%). Threads shut down: %d.",
+                        "[%s] Executed %d queries (%d queries/s; %.2f/s dbs, successful statements: %2d/%2d %2d%%). Threads shut down: %d. Not Matched Bugs: %d.",
                         dateFormat.format(date), currentNrQueries, (int) throughput, throughputDbs,
-                        successfulStatementsRatio, threadsShutdown));
+                        successfulStatementsNum, totalStatementsNum,
+                        successfulStatementsRatio, threadsShutdown, nrUnmatchResultSets.get()));
+
                 timeMillis = System.currentTimeMillis();
                 lastNrQueries = currentNrQueries;
                 lastNrDbs = currentNrDbs;
