@@ -37,9 +37,9 @@ public abstract class ProviderAdapter<G extends GlobalState<O, ? extends Abstrac
     @Override
     public void generateAndTestDatabase(G globalState) throws Exception {
         try {
-            globalState.getLogger().writeCurrent("==== SQLancer Generate Database Start ====");
+//            globalState.getLogger().writeCurrent("==== SQLancer Generate Database Start ====");
             generateDatabase(globalState);
-            globalState.getLogger().writeCurrent("==== SQLancer Generate Database Stop ====");
+//            globalState.getLogger().writeCurrent("==== SQLancer Generate Database Stop ====");
             checkViewsAreValid(globalState);
             globalState.getManager().incrementCreateDatabase();
 
@@ -48,9 +48,9 @@ public abstract class ProviderAdapter<G extends GlobalState<O, ? extends Abstrac
                 try (OracleRunReproductionState localState = globalState.getState().createLocalState()) {
                     assert localState != null;
                     try {
-                        globalState.getLogger().writeCurrent("==== SQLancer Oracle Begin ====");
+//                        globalState.getLogger().writeCurrent("==== SQLancer Oracle Begin ====");
                         oracle.check();
-                        globalState.getLogger().writeCurrent("==== SQLancer Oracle End ====");
+//                        globalState.getLogger().writeCurrent("==== SQLancer Oracle End ====");
                         globalState.getManager().incrementSelectQueryCount();
                     } catch (IgnoreMeException e) {
 

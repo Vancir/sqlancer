@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import sqlancer.common.query.ExpectedErrors;
 import sqlancer.common.query.SQLQueryAdapter;
@@ -83,12 +86,18 @@ public final class ComparatorHelper {
 
     public static void assumeResultSetsAreEqual(List<String> resultSet, List<String> secondResultSet,
             String originalQueryString, List<String> combinedString, SQLGlobalState<?, ?> state) {
+
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
+
         if (resultSet.size() != secondResultSet.size()) {
-            String queryFormatString = "-- %s;\n-- cardinality: %d";
-            String firstQueryString = String.format(queryFormatString, originalQueryString, resultSet.size());
+            String queryFormatString = "%s\n";
+            String firstQueryString = String.format(queryFormatString, originalQueryString);
             String secondQueryString = String.format(queryFormatString,
-                    combinedString.stream().collect(Collectors.joining(";")), secondResultSet.size());
-            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
+                    combinedString.stream().collect(Collectors.joining(";")));
+
+
+            state.getState().getLocalState().log("["+dateFormat.format(date)+"] " + String.format("%s\n%s", firstQueryString, secondQueryString));
 
             Main.nrUnmatchResultSets.addAndGet(1);
 
@@ -105,12 +114,12 @@ public final class ComparatorHelper {
             firstResultSetMisses.removeAll(secondHashSet);
             Set<String> secondResultSetMisses = new HashSet<>(secondHashSet);
             secondResultSetMisses.removeAll(firstHashSet);
-            String queryFormatString = "-- %s;\n-- misses: %s";
-            String firstQueryString = String.format(queryFormatString, originalQueryString, firstResultSetMisses);
+            String queryFormatString = "%s\n";
+            String firstQueryString = String.format(queryFormatString, originalQueryString);
             String secondQueryString = String.format(queryFormatString,
-                    combinedString.stream().collect(Collectors.joining(";")), secondResultSetMisses);
+                    combinedString.stream().collect(Collectors.joining(";")));
             // update the SELECT queries to be logged at the bottom of the error log file
-            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
+            state.getState().getLocalState().log("["+dateFormat.format(date)+"] " + String.format("%s\n%s", firstQueryString, secondQueryString));
 
             Main.nrUnmatchResultSets.addAndGet(1);
 

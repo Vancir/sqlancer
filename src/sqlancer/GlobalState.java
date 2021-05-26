@@ -1,5 +1,9 @@
 package sqlancer;
 
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import sqlancer.common.query.Query;
 import sqlancer.common.query.SQLancerResultSet;
 import sqlancer.common.schema.AbstractSchema;
@@ -88,6 +92,10 @@ public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends Ab
         if (logExecutionTime) {
             timer = new ExecutionTimer().start();
         }
+
+//        Date date = new Date();
+//        DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
+
         if (getOptions().printAllStatements()) {
             System.out.println(q.getLogString());
         }

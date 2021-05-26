@@ -96,7 +96,7 @@ public class SQLite3TLPAggregateOracle implements TestOracle {
             throw new IgnoreMeException();
         }
         state.getState().getLocalState()
-                .log("--" + originalQuery + "\n--" + metamorphicText + "\n-- " + firstResult + "\n-- " + secondResult);
+                .log( originalQuery + "\n" + metamorphicText + "12312312312\n");
         if ((firstResult == null && secondResult != null
                 || firstResult != null && !firstResult.contentEquals(secondResult))
                 && !ComparatorHelper.isEqualDouble(firstResult, secondResult)) {

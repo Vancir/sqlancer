@@ -176,10 +176,13 @@ public final class Main {
             if (!logEachSelect) {
                 throw new UnsupportedOperationException();
             }
+            Date date = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
+
             try {
                 currentFileWriter.flush();
 
-                getCurrentFileWriter().write(loggable.getLogString());
+                getCurrentFileWriter().write("["+dateFormat.format(date)+"] " + loggable.getLogString());
 
                 currentFileWriter.flush();
             } catch (IOException e) {
@@ -188,13 +191,13 @@ public final class Main {
         }
 
         public void logException(Throwable reduce, StateToReproduce state) {
-            Loggable stackTrace = getStackTrace(reduce);
+//            Loggable stackTrace = getStackTrace(reduce);
             FileWriter logFileWriter2 = getLogFileWriter();
             try {
-                logFileWriter2.write(stackTrace.getLogString());
+//                logFileWriter2.write(stackTrace.getLogString());
                 printState(logFileWriter2, state);
-            } catch (IOException e) {
-                throw new AssertionError(e);
+//            } catch (IOException e) {
+//                throw new AssertionError(e);
             } finally {
                 try {
                     logFileWriter2.flush();
@@ -214,6 +217,8 @@ public final class Main {
 
 //            sb.append(databaseProvider.getLoggableFactory()
 //                    .getInfo(state.getDatabaseName(), state.getDatabaseVersion(), state.getSeedValue()).getLogString());
+//            Date date = new Date();
+//            DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
 
             for (Query<?> s : state.getStatements()) {
                 sb.append(s.getLogString());

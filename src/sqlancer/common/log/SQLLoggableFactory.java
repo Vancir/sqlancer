@@ -2,6 +2,9 @@ package sqlancer.common.log;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import sqlancer.common.query.Query;
 import sqlancer.common.query.SQLQueryAdapter;
@@ -35,10 +38,12 @@ public class SQLLoggableFactory extends LoggableFactory {
     @Override
     protected Loggable infoToLoggable(String time, String databaseName, String databaseVersion, long seedValue) {
         StringBuilder sb = new StringBuilder();
-        sb.append("-- Time: " + time + "\n");
-        sb.append("-- Database: " + databaseName + "\n");
-        sb.append("-- Database version: " + databaseVersion + "\n");
-        sb.append("-- seed value: " + seedValue + "\n");
+//        sb.append("-- Time: " + time + "\n");
+//        sb.append("-- Database: " + databaseName + "\n");
+//        sb.append("-- Database version: " + databaseVersion + "\n");
+//        sb.append("-- seed value: " + seedValue + "\n");
+//        Date date = new Date();
+//        DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
         return new LoggedString(sb.toString());
     }
 
@@ -47,6 +52,7 @@ public class SQLLoggableFactory extends LoggableFactory {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         throwable.printStackTrace(pw);
+
         return new LoggedString("--" + sw.toString().replace("\n", "\n--"));
     }
 }
