@@ -93,8 +93,8 @@ public final class ComparatorHelper {
             String secondQueryString = String.format(queryFormatString,
                     combinedString.stream().collect(Collectors.joining(";")));
 
-            state.getLogger().writeCurrent(firstQueryString);
-            state.getLogger().writeCurrent(secondQueryString);
+//            state.getLogger().writeCurrent(firstQueryString);
+//            state.getLogger().writeCurrent(secondQueryString);
 //            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
             state.getState().getLocalState().log(firstQueryString);
             state.getState().getLocalState().log(secondQueryString);
@@ -119,8 +119,8 @@ public final class ComparatorHelper {
             String secondQueryString = String.format(queryFormatString,
                     combinedString.stream().collect(Collectors.joining(";")));
             // update the SELECT queries to be logged at the bottom of the error log file
-            state.getLogger().writeCurrent(firstQueryString);
-            state.getLogger().writeCurrent(secondQueryString);
+//            state.getLogger().writeCurrent(firstQueryString);
+//            state.getLogger().writeCurrent(secondQueryString);
 
 //            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
             state.getState().getLocalState().log(firstQueryString);
