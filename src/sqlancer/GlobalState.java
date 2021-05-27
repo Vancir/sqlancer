@@ -93,9 +93,6 @@ public abstract class GlobalState<O extends DBMSSpecificOptions<?>, S extends Ab
             timer = new ExecutionTimer().start();
         }
 
-//        Date date = new Date();
-//        DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
-
         if (getOptions().printAllStatements()) {
             System.out.println(q.getLogString());
         }

@@ -182,7 +182,11 @@ public final class Main {
             try {
                 currentFileWriter.flush();
 
-                getCurrentFileWriter().write("["+dateFormat.format(date)+"] " + loggable.getLogString());
+                String logStr = loggable.getLogString();
+                if (!logStr.startsWith("[")) {
+                    logStr = "[" + dateFormat.format(date) + "] " + logStr;
+                }
+                getCurrentFileWriter().write(logStr);
 
                 currentFileWriter.flush();
             } catch (IOException e) {
@@ -217,11 +221,15 @@ public final class Main {
 
 //            sb.append(databaseProvider.getLoggableFactory()
 //                    .getInfo(state.getDatabaseName(), state.getDatabaseVersion(), state.getSeedValue()).getLogString());
-//            Date date = new Date();
-//            DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
+            Date date = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
 
             for (Query<?> s : state.getStatements()) {
-                sb.append(s.getLogString());
+                String logStr = s.getLogString();
+                if (!logStr.startsWith("[")) {
+                    logStr = "[" + dateFormat.format(date) + "] " + logStr;
+                }
+                sb.append(logStr);
                 sb.append('\n');
             }
             try {

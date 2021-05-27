@@ -87,17 +87,17 @@ public final class ComparatorHelper {
     public static void assumeResultSetsAreEqual(List<String> resultSet, List<String> secondResultSet,
             String originalQueryString, List<String> combinedString, SQLGlobalState<?, ?> state) {
 
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
-
         if (resultSet.size() != secondResultSet.size()) {
-            String queryFormatString = "%s\n";
+            String queryFormatString = "%s";
             String firstQueryString = String.format(queryFormatString, originalQueryString);
             String secondQueryString = String.format(queryFormatString,
                     combinedString.stream().collect(Collectors.joining(";")));
 
-
-            state.getState().getLocalState().log("["+dateFormat.format(date)+"] " + String.format("%s\n%s", firstQueryString, secondQueryString));
+            state.getLogger().writeCurrent(firstQueryString);
+            state.getLogger().writeCurrent(secondQueryString);
+//            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
+            state.getState().getLocalState().log(firstQueryString);
+            state.getState().getLocalState().log(secondQueryString);
 
             Main.nrUnmatchResultSets.addAndGet(1);
 
@@ -114,12 +114,18 @@ public final class ComparatorHelper {
             firstResultSetMisses.removeAll(secondHashSet);
             Set<String> secondResultSetMisses = new HashSet<>(secondHashSet);
             secondResultSetMisses.removeAll(firstHashSet);
-            String queryFormatString = "%s\n";
+            String queryFormatString = "%s";
             String firstQueryString = String.format(queryFormatString, originalQueryString);
             String secondQueryString = String.format(queryFormatString,
                     combinedString.stream().collect(Collectors.joining(";")));
             // update the SELECT queries to be logged at the bottom of the error log file
-            state.getState().getLocalState().log("["+dateFormat.format(date)+"] " + String.format("%s\n%s", firstQueryString, secondQueryString));
+            state.getLogger().writeCurrent(firstQueryString);
+            state.getLogger().writeCurrent(secondQueryString);
+
+//            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
+            state.getState().getLocalState().log(firstQueryString);
+            state.getState().getLocalState().log(secondQueryString);
+
 
             Main.nrUnmatchResultSets.addAndGet(1);
 

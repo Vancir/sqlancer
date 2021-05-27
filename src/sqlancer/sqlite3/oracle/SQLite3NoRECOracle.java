@@ -4,6 +4,9 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import sqlancer.IgnoreMeException;
 import sqlancer.Randomly;
@@ -67,6 +70,7 @@ public class SQLite3NoRECOracle extends NoRECBase<SQLite3GlobalState> implements
         if (optimizedCount == NO_VALID_RESULT || unoptimizedCount == NO_VALID_RESULT) {
             throw new IgnoreMeException();
         }
+
         if (optimizedCount != unoptimizedCount) {
             state.getState().getLocalState().log(optimizedQueryString + ";\n" + unoptimizedQueryString + ";");
             throw new AssertionError(optimizedCount + " " + unoptimizedCount);

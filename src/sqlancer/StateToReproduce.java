@@ -4,6 +4,9 @@ import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import sqlancer.common.query.Query;
 
@@ -111,6 +114,11 @@ public class StateToReproduce {
         }
 
         public void log(String s) {
+            Date date = new Date();
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd HH:mm:ss");
+            if (!s.startsWith("[")) {
+                s = "[" + dateFormat.format(date) + "] " + s;
+            }
             statements.add(databaseProvider.getLoggableFactory().getQueryForStateToReproduce(s));
         }
 
