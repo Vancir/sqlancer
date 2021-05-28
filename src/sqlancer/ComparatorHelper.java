@@ -96,6 +96,7 @@ public final class ComparatorHelper {
 //            state.getLogger().writeCurrent(firstQueryString);
 //            state.getLogger().writeCurrent(secondQueryString);
 //            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual ====");
             state.getState().getLocalState().log(firstQueryString);
             state.getState().getLocalState().log(secondQueryString);
 
@@ -123,9 +124,9 @@ public final class ComparatorHelper {
 //            state.getLogger().writeCurrent(secondQueryString);
 
 //            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual ====");
             state.getState().getLocalState().log(firstQueryString);
             state.getState().getLocalState().log(secondQueryString);
-
 
             Main.nrUnmatchResultSets.addAndGet(1);
 
