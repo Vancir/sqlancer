@@ -322,7 +322,7 @@ public final class Main {
             stateToRepro = provider.getStateToReproduce(databaseName);
             stateToRepro.seedValue = r.getSeed();
             state.setState(stateToRepro);
-            logger = new StateLogger(databaseName, provider, options);
+//            logger = new StateLogger(databaseName, provider, options);
             state.setRandomly(r);
             state.setDatabaseName(databaseName);
             state.setMainOptions(options);
@@ -335,10 +335,10 @@ public final class Main {
                     // ignore
                 }
                 state.setConnection(con);
-                state.setStateLogger(logger);
+                state.setStateLogger(getLogger());
                 state.setManager(manager);
                 if (options.logEachSelect()) {
-                    logger.writeCurrent(state.getState());
+                    getLogger().writeCurrent(state.getState());
                 }
                 provider.generateAndTestDatabase(state);
 //                try {
@@ -365,6 +365,11 @@ public final class Main {
         }
 
         public StateLogger getLogger() {
+            if (logger == null) {
+//                System.out.println("=== Trigger new logger.");
+                logger = new StateLogger(databaseName, provider, options);
+            }
+
             return logger;
         }
 
@@ -378,6 +383,8 @@ public final class Main {
         private final DatabaseProvider<G, O, C> provider;
         private final MainOptions options;
         private final O command;
+
+        DBMSExecutor cachedDBMSExecutor;
 
         public DBMSExecutorFactory(DatabaseProvider<G, O, C> provider, MainOptions options) {
             this.provider = provider;
@@ -400,8 +407,12 @@ public final class Main {
         @SuppressWarnings("unchecked")
         public DBMSExecutor<G, O, C> getDBMSExecutor(String databaseName, Randomly r) {
             try {
-                return new DBMSExecutor<G, O, C>(provider.getClass().getDeclaredConstructor().newInstance(), options,
-                        command, databaseName, r);
+//                NOTE(vancir): only for sqlite3.
+                if (cachedDBMSExecutor == null) {
+                    cachedDBMSExecutor = new DBMSExecutor<G, O, C>(provider.getClass().getDeclaredConstructor().newInstance(), options,
+                            command, databaseName, r);
+                }
+                return cachedDBMSExecutor;
             } catch (Exception e) {
                 throw new AssertionError(e);
             }
@@ -467,17 +478,18 @@ public final class Main {
         ExecutorService execService = Executors.newFixedThreadPool(options.getNumberConcurrentThreads());
         DBMSExecutorFactory<?, ?, ?> executorFactory = nameToProvider.get(jc.getParsedCommand());
 
-        if (options.performConnectionTest()) {
-            try {
-                executorFactory.getDBMSExecutor(options.getDatabasePrefix() + "connectiontest", new Randomly())
-                        .testConnection();
-            } catch (Exception e) {
-                System.err.println(
-                        "SQLancer failed creating a test database, indicating that SQLancer might have failed connecting to the DBMS. In order to change the username, password, host and port, you can use the --username, --password, --host and --port options.\n\n");
-                e.printStackTrace();
-                return options.getErrorExitCode();
-            }
-        }
+//        NOTE(vancir): disable connection test.
+//        if (options.performConnectionTest()) {
+//            try {
+//                executorFactory.getDBMSExecutor(options.getDatabasePrefix() + "connectiontest", new Randomly())
+//                        .testConnection();
+//            } catch (Exception e) {
+//                System.err.println(
+//                        "SQLancer failed creating a test database, indicating that SQLancer might have failed connecting to the DBMS. In order to change the username, password, host and port, you can use the --username, --password, --host and --port options.\n\n");
+//                e.printStackTrace();
+//                return options.getErrorExitCode();
+//            }
+//        }
 
         for (int i = 0; i < options.getTotalNumberTries(); i++) {
             final String databaseName = options.getDatabasePrefix() + i;
