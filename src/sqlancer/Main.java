@@ -385,6 +385,7 @@ public final class Main {
         private final O command;
 
         DBMSExecutor cachedDBMSExecutor;
+        String prevDBMSName = "";
 
         public DBMSExecutorFactory(DatabaseProvider<G, O, C> provider, MainOptions options) {
             this.provider = provider;
@@ -408,6 +409,13 @@ public final class Main {
         public DBMSExecutor<G, O, C> getDBMSExecutor(String databaseName, Randomly r) {
             try {
 //                NOTE(vancir): only for sqlite3.
+                if (databaseName != prevDBMSName) {
+//                    database name changed. return new DBMSExecutor
+                    prevDBMSName = databaseName;
+                    cachedDBMSExecutor = new DBMSExecutor<G, O, C>(provider.getClass().getDeclaredConstructor().newInstance(), options,
+                            command, databaseName, r);
+                }
+
                 if (cachedDBMSExecutor == null) {
                     cachedDBMSExecutor = new DBMSExecutor<G, O, C>(provider.getClass().getDeclaredConstructor().newInstance(), options,
                             command, databaseName, r);
