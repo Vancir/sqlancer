@@ -341,12 +341,12 @@ public final class Main {
                     logger.writeCurrent(state.getState());
                 }
                 provider.generateAndTestDatabase(state);
-                try {
-                    logger.getCurrentFileWriter().close();
-                    logger.currentFileWriter = null;
-                } catch (IOException e) {
-                    throw new AssertionError(e);
-                }
+//                try {
+//                    logger.getCurrentFileWriter().close();
+//                    logger.currentFileWriter = null;
+//                } catch (IOException e) {
+//                    throw new AssertionError(e);
+//                }
             }
         }
 
@@ -535,16 +535,16 @@ public final class Main {
                         executor.getLogger().logException(reduce, executor.getStateToReproduce());
                         return false;
                     } finally {
-                        try {
-                            if (options.logEachSelect()) {
-                                if (executor.getLogger().currentFileWriter != null) {
-                                    executor.getLogger().currentFileWriter.close();
-                                }
-                                executor.getLogger().currentFileWriter = null;
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            if (options.logEachSelect()) {
+//                                if (executor.getLogger().currentFileWriter != null) {
+//                                    executor.getLogger().currentFileWriter.close();
+//                                }
+//                                executor.getLogger().currentFileWriter = null;
+//                            }
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 }
             });
