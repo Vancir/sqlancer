@@ -96,9 +96,10 @@ public final class ComparatorHelper {
 //            state.getLogger().writeCurrent(firstQueryString);
 //            state.getLogger().writeCurrent(secondQueryString);
 //            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
-            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual ====");
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Start ====");
             state.getState().getLocalState().log(firstQueryString);
             state.getState().getLocalState().log(secondQueryString);
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
 
             Main.nrUnmatchResultSets.addAndGet(1);
 
@@ -124,11 +125,13 @@ public final class ComparatorHelper {
 //            state.getLogger().writeCurrent(secondQueryString);
 
 //            state.getState().getLocalState().log(String.format("%s\n%s", firstQueryString, secondQueryString));
-            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual ====");
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Start ====");
             state.getState().getLocalState().log(firstQueryString);
             state.getState().getLocalState().log(secondQueryString);
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
 
             Main.nrUnmatchResultSets.addAndGet(1);
+
 
             String assertionMessage = String.format("the content of the result sets mismatch!\n%s\n%s",
                     firstQueryString, secondQueryString);
