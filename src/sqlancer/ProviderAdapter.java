@@ -59,6 +59,8 @@ public abstract class ProviderAdapter<G extends GlobalState<O, ? extends Abstrac
                     localState.executedWithoutError();
                 }
             }
+            System.out.println("==== SQLancer Log Partition ====");
+            throw new AssertionError("==== SQLancer Log Partition ====");
         } finally {
             globalState.getConnection().close();
         }
