@@ -68,6 +68,12 @@ public class PostgresNoRECOracle extends NoRECBase<PostgresGlobalState> implemen
             String secondQueryStringWithCount = String.format(queryFormatString, unoptimizedQueryString, secondCount);
             state.getState().getLocalState()
                     .log(String.format("%s\n%s", firstQueryStringWithCount, secondQueryStringWithCount));
+            
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Start ====");
+            state.getState().getLocalState().log(firstQueryStringWithCount);
+            state.getState().getLocalState().log(secondQueryStringWithCount);
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
+
             String assertionMessage = String.format("the counts mismatch (%d and %d)!\n%s\n%s", firstCount, secondCount,
                     firstQueryStringWithCount, secondQueryStringWithCount);
             throw new AssertionError(assertionMessage);
