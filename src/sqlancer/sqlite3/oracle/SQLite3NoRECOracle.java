@@ -8,6 +8,7 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import sqlancer.Main;
 import sqlancer.IgnoreMeException;
 import sqlancer.Randomly;
 import sqlancer.common.oracle.NoRECBase;
@@ -72,7 +73,15 @@ public class SQLite3NoRECOracle extends NoRECBase<SQLite3GlobalState> implements
         }
 
         if (optimizedCount != unoptimizedCount) {
-            state.getState().getLocalState().log(optimizedQueryString + ";\n" + unoptimizedQueryString + ";");
+            // state.getState().getLocalState().log(optimizedQueryString + ";\n" + unoptimizedQueryString + ";");
+
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Start ====");
+            state.getState().getLocalState().log(optimizedQueryString);
+            state.getState().getLocalState().log(unoptimizedQueryString);
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
+
+            Main.nrUnmatchResultSets.addAndGet(1);
+
             throw new AssertionError(optimizedCount + " " + unoptimizedCount);
         }
 
