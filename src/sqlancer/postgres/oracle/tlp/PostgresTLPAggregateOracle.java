@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.postgresql.util.PSQLException;
 
+import sqlancer.Main;
 import sqlancer.ComparatorHelper;
 import sqlancer.IgnoreMeException;
 import sqlancer.Randomly;
@@ -80,10 +81,13 @@ public class PostgresTLPAggregateOracle extends PostgresTLPBase implements TestO
             }
             String assertionMessage = String.format("the results mismatch!\n%s\n%s", firstQueryString,
                     secondQueryString);
+
             state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Start ====");
             state.getState().getLocalState().log(firstQueryString);
             state.getState().getLocalState().log(secondQueryString);
             state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
+            Main.nrUnmatchResultSets.addAndGet(1);
+
             throw new AssertionError(assertionMessage);
         }
     }

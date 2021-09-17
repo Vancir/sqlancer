@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import sqlancer.Main;
 import sqlancer.ComparatorHelper;
 import sqlancer.IgnoreMeException;
 import sqlancer.Randomly;
@@ -81,11 +82,12 @@ public class SQLite3TLPHavingOracle implements TestOracle {
             state.getLogger().writeCurrent(combinedString);
         }
         if (new HashSet<>(resultSet).size() != new HashSet<>(secondResultSet).size()) {
-            
+
             state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Start ====");
             state.getState().getLocalState().log(originalQueryString);
             state.getState().getLocalState().log(combinedString);
             state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
+            Main.nrUnmatchResultSets.addAndGet(1);
 
             throw new AssertionError(originalQueryString + ";\n" + combinedString + ";");
         }

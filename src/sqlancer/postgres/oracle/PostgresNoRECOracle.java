@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import sqlancer.Main;
 import sqlancer.IgnoreMeException;
 import sqlancer.Randomly;
 import sqlancer.common.oracle.NoRECBase;
@@ -73,6 +74,7 @@ public class PostgresNoRECOracle extends NoRECBase<PostgresGlobalState> implemen
             state.getState().getLocalState().log(firstQueryStringWithCount);
             state.getState().getLocalState().log(secondQueryStringWithCount);
             state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
+            Main.nrUnmatchResultSets.addAndGet(1);
 
             String assertionMessage = String.format("the counts mismatch (%d and %d)!\n%s\n%s", firstCount, secondCount,
                     firstQueryStringWithCount, secondQueryStringWithCount);

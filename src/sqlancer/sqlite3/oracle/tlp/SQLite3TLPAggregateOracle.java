@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import sqlancer.Main;
 import sqlancer.ComparatorHelper;
 import sqlancer.IgnoreMeException;
 import sqlancer.Randomly;
@@ -108,6 +109,8 @@ public class SQLite3TLPAggregateOracle implements TestOracle {
             state.getState().getLocalState().log(originalQuery);
             state.getState().getLocalState().log(metamorphicText);
             state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
+            
+            Main.nrUnmatchResultSets.addAndGet(1);
 
             throw new AssertionError();
 
