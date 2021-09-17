@@ -103,6 +103,11 @@ public class SQLite3TLPAggregateOracle implements TestOracle {
         if ((firstResult == null && secondResult != null
                 || firstResult != null && !firstResult.contentEquals(secondResult))
                 && !ComparatorHelper.isEqualDouble(firstResult, secondResult)) {
+                    
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Start ====");
+            state.getState().getLocalState().log(originalQuery);
+            state.getState().getLocalState().log(metamorphicText);
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
 
             throw new AssertionError();
 

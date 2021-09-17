@@ -81,6 +81,12 @@ public class SQLite3TLPHavingOracle implements TestOracle {
             state.getLogger().writeCurrent(combinedString);
         }
         if (new HashSet<>(resultSet).size() != new HashSet<>(secondResultSet).size()) {
+            
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Start ====");
+            state.getState().getLocalState().log(originalQueryString);
+            state.getState().getLocalState().log(combinedString);
+            state.getState().getLocalState().log("==== SQLancher ResultSetsAreNotEqual Stop ====");
+
             throw new AssertionError(originalQueryString + ";\n" + combinedString + ";");
         }
     }
