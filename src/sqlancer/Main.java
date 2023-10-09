@@ -84,6 +84,7 @@ public final class Main {
 
         private final boolean useReducer;
         private final DatabaseProvider<?, ?, ?> databaseProvider;
+        private long outputQueryFileNumber = 0;
 
         private static final class AlsoWriteToConsoleFileWriter extends FileWriter {
 
@@ -171,6 +172,18 @@ public final class Main {
             }
             if (currentFileWriter == null) {
                 try {
+                    if (curFile.exists() && !curFile.isDirectory()) {
+                        File targetFile;
+                        do {
+                            targetFile = new File(curFile.toPath() + "-finished-" + outputQueryFileNumber + ".log");
+                            outputQueryFileNumber++;
+                        } while (targetFile.exists() && !targetFile.isDirectory());
+                        try {
+                            Files.copy(curFile.toPath(), targetFile.toPath());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     currentFileWriter = new FileWriter(curFile, false);
                 } catch (IOException e) {
                     throw new AssertionError(e);
@@ -211,6 +224,13 @@ public final class Main {
             if (!logEachSelect) {
                 throw new UnsupportedOperationException();
             }
+            // try {
+            //     String unixTimeStr = "" + System.currentTimeMillis() / 1000L;
+            //     getCurrentFileWriter().write(unixTimeStr);
+            //     getCurrentFileWriter().write(";;;");
+            // } catch (IOException e) {
+            //     e.printStackTrace();
+            // }
             printState(getCurrentFileWriter(), state);
             try {
                 currentFileWriter.flush();
@@ -233,6 +253,9 @@ public final class Main {
                 throw new UnsupportedOperationException();
             }
             try {
+                String unixTimeStr = "" + System.currentTimeMillis() / 1000L;
+                getCurrentFileWriter().write(unixTimeStr);
+                getCurrentFileWriter().write(";;;");
                 getCurrentFileWriter().write(loggable.getLogString());
 
                 currentFileWriter.flush();
