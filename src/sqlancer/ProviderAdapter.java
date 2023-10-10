@@ -127,9 +127,9 @@ public abstract class ProviderAdapter<G extends GlobalState<O, ? extends Abstrac
                     try (OracleRunReproductionState localState = globalState.getState().createLocalState()) {
                         assert localState != null;
                         try {
+                            executedQueryCount += 1;
                             oracle.check();
                             String query = oracle.getLastQueryString();
-                            executedQueryCount += 1;
                             if (addQueryPlan(query, globalState)) {
                                 numOfNoNewQueryPlans = 0;
                             } else {
@@ -137,7 +137,7 @@ public abstract class ProviderAdapter<G extends GlobalState<O, ? extends Abstrac
                             }
                             globalState.getManager().incrementSelectQueryCount();
                         } catch (IgnoreMeException e) {
-
+                            executedQueryCount += 1;
                         }
                         localState.executedWithoutError();
                     }
